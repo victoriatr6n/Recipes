@@ -1,0 +1,73 @@
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+
+
+#app {
+  background-color:#F8FFF4;
+}
+
+#image {
+  opacity: 0.75;
+  
+}
+
+#welcome{
+  position: absolute;
+  top: 55%;
+  left: 68%;
+  
+  font-size: 55px;
+}
+
+#getStarted{
+   position: absolute;
+  top: 62%;
+  left: 80%;
+  
+  font-size: 35px;
+}
+
+a:link {
+  color: green;
+}
+
+/* visited link */
+a:visited {
+  color: green;
+}
+
+/* mouse over link */
+a:hover {
+  color: black;
+}
+
+/* selected link */
+a:active {
+  color: black;
+}
+
+#home{
+  color:#f5ebe0;
+}
+
+.recommended{
+  font-family: Lucida Sans, Lucida Sans Regular, Lucida Grande, Lucida Sans Unicode, Geneva, Verdana, sans-serif;
+  background-color:#a4ac86;
+  color:white;
+  
+}
+
+.right{
+  width:70%;
+  right:0px;
+}
+
+.left{
+  width:30%;
+  left:0px;
+  text-align: left;
+ 
+}

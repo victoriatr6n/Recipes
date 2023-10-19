@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Recipes</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+ 
+<div class="right">
+      <img style="background-color:white"id="image" src="https://cdn.mos.cms.futurecdn.net/RtArYWAxfJq5ztXAgWHmNN.jpg" alt="green kitchen"
+         />
+      </div>
+  <div class="left">
+      <h1 id="welcome" style='color: #c96742'>WELCOME!</h1>
+      <h4 id="getStarted" style='color: #c96742'><em><a href=#start>Get Started</a>
+        </em></h4>
+ </div>
+ 
+   <center>
+    <h2 id="start" style="font-size:30px; font-family:Georgia, 'Times New Roman', Times, serif;padding-top:15px;padding-bottom:15px;background-color:#283618;color:#fefae0">Date Nights, College Life, Family Meals, Parties Made Easier</h2>
+      </center>
+
+  <div id="app">
+    <v-app>
+      <v-main>
+        <v-container>
+      
+          <v-spacer></v-spacer>
+          <h2  style='margin-top:45px; margin-left:1px;font-family: "Bradley Hand"'><strong>Search for
+              recipes!</strong></h2>
+
+          <v-text-field v-model="servings" label="# of People" outlined></v-text-field>
+          <v-text-field v-model="key" label="Key Ingredient" outlined></v-text-field>
+
+          <v-btn @click="getRecipes" color="green" elevation="2" outlined plain raised> enter</v-btn>
+          <v-btn @click="retry" color="red" elevation="2" outlined plain raised>clear</v-btn>
+          
+
+          <h3 style='margin-top:30px; font-family: "Geneva"'>Results</h3>
+          <!--           <v-list-item two-line v-for="(row, index) in tableRows">
+            <v-list-item-content>
+              <div v-if="row.display !== ''">
+
+                <h4 style=font-family:Geneva>{{row.display}}</h4>
+
+                <p style=font-family:Geneva>{{row.ingredients}}</p>
+                <v-spacer></v-spacer>
+                <p style='margin-top:10px; style=font-family:Geneva'>{{row.instructions}}</p>
+
+                <form action="favorites.html">
+                  <v-btn @click="doMath(index)" icon color="#fcd5ce">
+                    <v-icon>mdi-heart</v-icon>
+                  </v-btn>
+                </form>
+              </div>
+            </v-list-item-content> -->
+
+          <v-expansion-panels>
+
+            <v-expansion-panel v-for="(row, index) in tableRows">
+              <div v-if="row.display !== ''">
+                <v-expansion-panel-header style="background-color:#eaac8b; color:white;">
+                  <h4 style=font-family:Geneva>{{row.display}}</h4>
+                   <v-btn @click="doMath(index)" icon color="red">
+                      
+                     <v-icon>mdi-heart</v-icon>
+                      </v-btn>
+                 
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <h3 style="margin-top:10px">Ingredients:</h3>
+                  <p style='font-family:Geneva; margin-top:15px'>{{row.ingredients}}</p>
+                  <br>
+                  <h3 style="margin-top:10px">Instructions:</h3>
+                  <p style='margin-top:10px; style=font-family:Geneva'>{{row.instructions}}</p>
+                </v-expansion-panel-content>
+              </div>
+            </v-expansion-panel>
+          </v-expansion-panels>
+
+          </v-list-item>
+          <p>{{message}}</p>
+
+
+
+  </div>
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js">
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+
+  <script>
+
+    var app = new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+
+      data: {
+        servings: "",
+        key: "",
+        message: "",
+
+        tableRows: [
+          {
+
+            display: '',
+            ingredients: "",
+            instructions: "",
+
+          }
+
+        ]
+      },
+      methods: {
+        getRecipes() {
+          const serv = parseInt(this.servings)
+          fetch(`https://servicenow-project.victoriatran3.repl.co/option?foodRequest=${this.key}&serving=${serv}`)
+            .then(response => response.json())
+            .then(datas => {
+              if (datas.length === 0) {
+                this.message = "no results, click 'clear' and try another serving size or ingredient!"
+              }
+              datas.forEach(data => {
+                this.tableRows.push({
+                  display: data.title,
+                  ingredients: data.ingredients,
+                  instructions: data.instructions
+                })
+
+              })
+            }
+
+            )
+            .catch(error => (console.log(error)))
+
+        },
+        retry() {
+          this.message = ""
+          this.servings = ""
+          this.key = ""
+          this.tableRows = []
+        },
+
+        doMath(index) {
+          var item = this.tableRows[index];
+          var title = item.display;
+          var instructions = item.instructions;
+          var ingredients = item.ingredients;
+          localStorage.setItem("title", title);
+          return false;
+
+        }
+      }
+    });
+  </script>
+  </v-container>
+  </v-main>
+  </v-app>
+  <!--     <a href='./favorites.html' target="_blank">
+      <h3 style='padding-top:20px;margin-left:95px;margin-bottom:15px'>fav</h3>
+    </a> -->
+  <div class="recommended">
+    <a href='./trySomethingNew.html'>
+      <h3 style='padding-top:20px;margin-left:95px;margin-bottom:15px'>Try Something New!</h3>
+    </a>
+    <p style='margin-left:125px; margin-bottom:15px'>Sopa De Cebollita or Spanish Onion Soup</p>
+    <p style='margin-left:125px;margin-bottom:15px'>Italian Fish Soup</p>
+    <p style='margin-left:125px;margin-bottom:15px'>Thai Shrimp and Sesame Noodles</p>
+    <p style='margin-left:125px;margin-bottom:15px'>Herbed Garlic Croutons</p>
+    <p style='margin-left:125px; padding-bottom:20px'>Shrimp with Peas and Angel Hair Pasta
+    </p>
+  </div>
+  <!--
+  This script places a badge on your repl's full-browser view back to your repl's cover
+  page. Try various colors for the theme: dark, light, red, orange, yellow, lime, green,
+  teal, blue, blurple, magenta, pink!
+  -->
+  <script src="https://replit.com/public/js/replit-badge.js" theme="blue" defer></script>
+</body>
+
+</html>
